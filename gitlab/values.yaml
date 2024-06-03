@@ -1,0 +1,63 @@
+global:
+  edition: ce
+  gitlabVersion: "17.0.1"
+  hosts:
+    domain: practical-test.catapa.com
+    gitlab:
+      name: rofi.practical-test.catapa.com
+      https: true
+  ingress:
+    configureCertmanager: false
+    tls:
+      enabled: true
+      secretName: gitlab-tls
+    annotations:
+      nginx.ingress.kubernetes.io/whitelist-source-range: 108.136.144.105/32
+
+certmanager:
+  install: false
+
+redis:
+  install: true
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  auth:
+    existingSecret: BcKLbHkuFiQaM9z
+    existingSecretKey: BcKLbHkuFiQaM9z
+    usePasswordFiles: true
+
+minio:
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 10m
+  persistence:
+    storageClass: standard
+    size: 10Gi
+
+postgresql:
+  install: true
+  auth:
+    password: BcKLbHkuFiQaM9z
+    postgresPassword: BcKLbHkuFiQaM9z
+  image:
+    tag: 14.8.0
+  persitence:
+    storageClass: standard
+
+prometheus:
+  install: false
+
+gitlab-runner:
+  install: false
+
+nginx-ingress:
+  controller:
+    replicaCount: 1
+    minAvailable: 0
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
